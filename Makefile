@@ -1,8 +1,8 @@
 
 .PHONY: clean
 
-LDLIBS = -L/usr/local/lib -lusb
-CFLAGS = -Wall -Werror -I/usr/local/include
+LDLIBS = -L/usr/local/lib -lusb-1.0
+CFLAGS = -Wall -Werror -I/usr/local/include/libusb-1.0
 
 PROG=		nxtctl
 PREFIX?=	/usr/local

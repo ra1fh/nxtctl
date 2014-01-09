@@ -25,8 +25,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-#include <usb.h>
+#include <libusb.h>
 #include "nxt.h"
 
 /* USB IDs of a lego nxt brick */
@@ -111,54 +113,26 @@ extern int vflag;
 /***********************************************************************/
 /* libusb helper functions                                             */
 /***********************************************************************/
-static struct usb_device* usb_find_usb_dev(int vendor, int product) {
-	struct usb_bus *busses, *bus;
-	struct usb_device *devs, *d;
-	u_int16_t v, p;
 
-	usb_find_busses();
-	usb_find_devices();
-	busses = usb_get_busses();
-	for (bus = busses; bus;  bus = bus->next) {
-		if (vflag)
-			fprintf(stderr, "nxt_find_usb_dev: bus dirname=%s\n", bus->dirname);
-		devs = bus->devices;
-		for(d=devs; d; d=d->next){
-			v = d->descriptor.idVendor;
-			p = d->descriptor.idProduct;
-			if (vflag)
-				fprintf(stderr, "nxt_find_usb_dev: dev filename=%s, vendor=0x%04x, product=0x%04x\n",
-						d->filename, v, p);
-			if((v == vendor) && (p==product)) {
-				if (vflag)
-					fprintf(stderr, "nxt_find_usb_dev: found dev filename=%s, vendor=0x%04x, product=0x%04x\n",
-							d->filename, v, p);
-				return d;
-			}
-		}
-	}
-	return NULL;
-}
-
-static int usb_write(struct usb_dev_handle *handle, Buf *buf, const char *desc) {
+static int usb_write(struct libusb_device_handle *handle, Buf *buf, const char *desc) {
 	int len;
 	if (vflag)
 		printf("usb_write: offset=%zd\n", buf->offset);
-	if ((len =usb_bulk_write(handle, NXT_WRITE_ENDPOINT, 
-							 (char*) buf->buf, buf->offset, NXT_WRITE_TIMEOUT)) < 0) {
+	if ((libusb_bulk_transfer(handle, NXT_WRITE_ENDPOINT, 
+								   buf->buf, buf->offset, &len, NXT_WRITE_TIMEOUT)) != 0) {
 		fprintf(stderr, "usb_bulk_write failed for %s\n", desc);
 		return -1;
 	}
 	return 0;
 }
 
-static int usb_read(struct usb_dev_handle *handle, Buf *buf, const char *desc) {
+static int usb_read(struct libusb_device_handle *handle, Buf *buf, const char *desc) {
 	int len;
 	buf_reset(buf);
 	if (vflag)
 		printf("usb_read: offset=%zd size=%zd\n", buf->offset, buf->size);
-	if ((len = usb_bulk_read(handle, NXT_READ_ENDPOINT, 
-							 (char*) buf->buf, buf->size, NXT_READ_TIMEOUT)) < 0) {
+	if ((libusb_bulk_transfer(handle, NXT_READ_ENDPOINT, 
+									buf->buf, buf->size, &len, NXT_READ_TIMEOUT)) != 0) {
 		fprintf(stderr, "usb_bulk_read failed for %s (%d)\n", desc, len);
 		return -1;
 	}
@@ -166,7 +140,7 @@ static int usb_read(struct usb_dev_handle *handle, Buf *buf, const char *desc) {
 	return 0;
 }
 
-static int usb_communicate(struct usb_dev_handle *handle, Buf *buf, const char*desc) {
+static int usb_communicate(struct libusb_device_handle *handle, Buf *buf, const char*desc) {
 	if (usb_write(handle, buf, desc) != 0) {
 		return -1;
 	}
@@ -530,46 +504,42 @@ NXT* nxt_new() {
 }
 
 int nxt_init(NXT *self) {
-	unsigned int vendor = LEGO_VENDOR_ID;
-	unsigned int product = LEGO_NXT_PRODUCT_ID;
-
-	usb_init();
-	self->dev = usb_find_usb_dev(vendor, product);
-	if (self->dev == NULL) {
-		fprintf(stderr, "no usb device found (vendor=0x%04x product=0x%04x)\n",
-				vendor, product);
+	libusb_init(NULL);
+	self->handle = libusb_open_device_with_vid_pid(NULL, LEGO_VENDOR_ID, LEGO_NXT_PRODUCT_ID);
+	if (self->handle == NULL) {
+		fprintf(stderr, "no NXT device found\n");
 		return -1;
 	}
 
-	self->handle = usb_open(self->dev);
-	if (! self->handle) {
-		fprintf(stderr, "failed to open device handle (vendor=0x%04x product=0x%04x)",
-				vendor, product);
+	self->dev = libusb_get_device(self->handle);
+	if (! self->dev) {
+		fprintf(stderr, "failed to open device handle\n");
 		return -1;
 	}
-	usb_reset(self->handle);
+	libusb_reset_device(self->handle);
 
 	int err;
-	err = usb_set_configuration(self->handle, USB_CONFIG);
+	err = libusb_set_configuration(self->handle, USB_CONFIG);
 	if(err != 0){
-		fprintf(stderr, "fails to set config, errno=%d "
-				        "(cf=%d vendor=0x%04x product=0x%04x)",
-				err, USB_CONFIG, vendor, product);
+		fprintf(stderr, "fails to set config "
+				        "(errno=%d cf=%d)",
+				err, USB_CONFIG);
 		return -1;
 	}
 
-	err = usb_claim_interface(self->handle, USB_INTERFACE);
+	err = libusb_claim_interface(self->handle, USB_INTERFACE);
 	if(err != 0){
 		fprintf(stderr, "fails to optain usb interface "
-				        "(erno=%d id=%d vendor=0x%04x product=0x%04x)",
-				err, USB_INTERFACE, vendor, product);
+				        "(errno=%d id=%d)",
+				err, USB_INTERFACE);
 		return -1;
 	}
 	return 0;
 }
 
 int nxt_close(NXT *self) {
-	return usb_close(self->handle);
+	libusb_close(self->handle);
+	return 0;
 }
 
 

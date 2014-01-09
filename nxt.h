@@ -21,8 +21,8 @@
 #include "buf.h"
 
 typedef struct {
-	struct usb_device *dev;
-	struct usb_dev_handle *handle;
+	struct libusb_device *dev;
+	struct libusb_device_handle *handle;
 	Buf *buf;
 } NXT;
 

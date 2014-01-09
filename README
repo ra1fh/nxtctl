@@ -12,7 +12,7 @@ The following operations are implemented:
 Building
 --------
 
-You need libusb to build nxtctl. Build nxtctl with:
+You need libusb-1.0 to build nxtctl. Build nxtctl with:
 
     $ make
 
