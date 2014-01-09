@@ -14,7 +14,7 @@ SRCS=		main.c nxt.c buf.c
 OBJS=		main.o nxt.o buf.o
 HDRS=       nxt.h buf.h
 
-CC =		scan-build clang
+CC =		gcc
 
 INSTALLDIR=	install -d
 INSTALLBIN= install -m 0555
