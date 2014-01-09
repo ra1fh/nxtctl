@@ -255,10 +255,12 @@ int buf_vpack(Buf *self, char *fmt, va_list ap) {
 			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_write_string(self, s, len);
+			break;
 		case 'd': /* data */
 			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_write_data(self, s, len);
+			break;
 		default: /* illegal format */
 			res = -1;
 		}
@@ -298,6 +300,7 @@ int buf_vunpack(Buf *self, char *fmt, va_list ap) {
 			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_read_string(self, s, len);
+			break;
 		default: /* illegal format */
 			res = -1;
 		}

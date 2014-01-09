@@ -323,6 +323,10 @@ static int nxt_simple_command(NXT* self, char *desc, char *fmt, ...) {
 	ret = buf_vpack(buf, fmt, ap);
 	va_end(ap);
 
+	if (ret < 0) {
+		return -1;
+	}
+
 	if (usb_communicate(self->handle, buf, desc) != 0)
 		return -1;
 	if (buf_unpack(buf, "bbb", &reply, &command, &status) == -1)
@@ -632,14 +636,12 @@ int nxt_print_device_info(NXT* self){
 
 int nxt_print_files(NXT *self, const char *pattern) {
 	char filename[20];
-	Buf *buf;
 	int error = 0;
 	int counter = 0;
 	unsigned int filesize;
 	unsigned char handle;
 	unsigned char handle_valid = 0;
 
-	buf = self->buf;
 	counter = 0;
 
 	if (pattern && strlen(pattern) >= 20) {
