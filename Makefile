@@ -1,8 +1,8 @@
 
 .PHONY: clean
 
-LDLIBS = -L/usr/local/lib -lusb-1.0
-CFLAGS = -Wall -Werror -I/usr/local/include/libusb-1.0
+LDLIBS = 
+CFLAGS = -Wall -Werror
 
 PROG=		nxtctl
 PREFIX?=	/usr/local
@@ -23,10 +23,10 @@ all: $(PROG)
 $(OBJS): $(HDRS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	$(CC) `pkg-config --cflags libusb-1.0` $(CFLAGS) -c $<
 
 $(PROG): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS) `pkg-config --libs libusb-1.0`
 
 clean:
 	rm -f $(OBJS) $(PROG)
