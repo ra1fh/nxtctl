@@ -1,11 +1,8 @@
 
 .PHONY: clean
 
-LIBUSB_CFLAGS != pkg-config --cflags libusb
-LIBUSB_LIBS   != pkg-config --libs libusb
-
-LDLIBS = $(LIBUSB_LIBS)
-CFLAGS = -Wall -Werror $(LIBUSB_CFLAGS) 
+LDLIBS = -L/usr/local/lib -lusb
+CFLAGS = -Wall -Werror -I/usr/local/include
 
 PROG=		nxtctl
 PREFIX?=	/usr/local
