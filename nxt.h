@@ -30,18 +30,18 @@ typedef struct {
 NXT* nxt_new(); 
 int nxt_init(NXT *self);
 int nxt_print_battery_level(NXT *self);
-int nxt_print_firmware_version(NXT* self);
-int nxt_print_device_info(NXT* self);
+int nxt_print_firmware_version(NXT *self);
+int nxt_print_device_info(NXT *self);
 int nxt_print_files(NXT *self, const char *pattern);
 int nxt_start_program(NXT *self, const char *filename);
 int nxt_stop_program(NXT *self);
 int nxt_get_file(NXT *self, const char *filename);
-int nxt_put_file(NXT* self, const char* filename);
+int nxt_put_file(NXT *self, const char *filename);
 int nxt_delete_file(NXT *self, const char *filename);
 int nxt_close(NXT *self);
 int nxt_boot(NXT *self);
 int nxt_print_infos();
-int nxt_upload(char* fname);
-int nxt_download(char* fname);
+int nxt_upload(char *fname);
+int nxt_download(char *fname);
 
 #endif

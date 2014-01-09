@@ -334,7 +334,7 @@ static int nxt_simple_command(NXT* self, char *desc, char *fmt, ...) {
 
 static int nxt_cmd_write(NXT *self, 
 						 unsigned char handle,
-						 unsigned char *data,
+						 char *data,
 						 unsigned short size) {
 	Buf *buf = self->buf;
 	unsigned short writesize;
@@ -445,7 +445,7 @@ static int nxt_cmd_close(NXT *self, unsigned char handle) {
 							  NXT_SYSTEM_COMMAND, NXT_CMD_CLOSE, handle);
 }
 
-static int nxt_cmd_delete(NXT *self, const unsigned char* filename) {
+static int nxt_cmd_delete(NXT *self, const char* filename) {
 	return nxt_simple_command(self, "DELETE", "bbs", 
 							  NXT_SYSTEM_COMMAND, NXT_CMD_DELETE, filename, 20);
 }
@@ -461,9 +461,9 @@ static int nxt_cmd_delete(NXT *self, const unsigned char* filename) {
  * returns 0 on success and -1 on error and -2 on file not found
  */
 static int nxt_cmd_find(NXT *self, 
-						const unsigned char *pattern, 
+						const char *pattern, 
 						unsigned char *handle, 
-						unsigned char *filename, 
+						char *filename, 
 						unsigned int *filesize) {
 	Buf *buf = self->buf;
 	unsigned char reply, command, status;
@@ -719,7 +719,7 @@ int nxt_stop_program(NXT* self){
 #define NXT_READ_SIZE 57 
 
 int nxt_get_file_fd(NXT *self, const char *filename, int fd) {
-	unsigned char data[BUFSIZ];
+	char data[BUFSIZ];
 	unsigned int filesize;
 	unsigned short chunksize;
 	unsigned int transferred = 0;
@@ -755,7 +755,7 @@ int nxt_get_file_fd(NXT *self, const char *filename, int fd) {
 	}
 
 	if (filesize == 0) {
-		printf("%hu bytes transfered to %s\n", transferred, filename);
+		printf("%u bytes transfered to %s\n", transferred, filename);
 		return 0;
 	} else {
 		return -1;
@@ -790,7 +790,7 @@ int nxt_get_file(NXT *self, const char *filename) {
 #define NXT_WRITE_SIZE 60 
 
 static int nxt_put_file_fd(NXT* self, const char *filename, int fd) {
-	unsigned char data[BUFSIZ];
+	char data[BUFSIZ];
 	struct stat sb;
 	ssize_t nr;
 	unsigned int filesize;

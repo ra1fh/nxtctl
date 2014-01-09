@@ -228,7 +228,7 @@ int buf_pack(Buf *self, char *fmt, ...) {
 }
 
 int buf_vpack(Buf *self, char *fmt, va_list ap) {
-	unsigned char *s;
+	char *s;
 	char *p;
 	uint8_t u8;
 	uint16_t u16;
@@ -252,11 +252,11 @@ int buf_vpack(Buf *self, char *fmt, va_list ap) {
 			res = buf_write_uint(self, u32);
 			break;
 		case 's': /* string */
-			s = va_arg(ap, unsigned char*);
+			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_write_string(self, s, len);
 		case 'd': /* data */
-			s = va_arg(ap, unsigned char*);
+			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_write_data(self, s, len);
 		default: /* illegal format */
@@ -271,7 +271,7 @@ int buf_vpack(Buf *self, char *fmt, va_list ap) {
 }
 
 int buf_vunpack(Buf *self, char *fmt, va_list ap) {
-	unsigned char *s;
+	char *s;
 	char *p;
 	uint8_t *u8p;
 	uint16_t *u16p;
@@ -295,7 +295,7 @@ int buf_vunpack(Buf *self, char *fmt, va_list ap) {
 			res = buf_read_uint(self, u32p);
 			break;
 		case 's': /* string */
-			s = va_arg(ap, unsigned char*);
+			s = va_arg(ap, char*);
 			len = va_arg(ap, size_t);
 			res = buf_read_string(self, s, len);
 		default: /* illegal format */
