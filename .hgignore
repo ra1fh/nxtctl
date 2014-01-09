@@ -1,2 +1,4 @@
 \.o$
 nxtctl
+cscope.files
+cscope.out
