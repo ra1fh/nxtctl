@@ -1,0 +1,34 @@
+nxtctl
+======
+
+This is a simple libusb based program to control Mindstorms NXT.
+The following operations are implemented:
+
+- list files
+- upload/download/delete files
+- start/stop programs
+- get firmware and battery info
+
+Building
+--------
+
+You need libusb to build nxtctl. Build nxtctl with:
+
+    $ make
+
+Usage
+-----
+
+nxtctl [-BbdfghilpsSv] [filename/pattern]
+
+- -B: boot (dangerous, disabled by default)
+- -b: print battery level
+- -d [filename]: delete file
+- -f: print firmware version
+- -g [filename]: get file
+- -p [filename]: put file
+- -i: print device info
+- -l [pattern]: list files
+- -s [filename]: start program
+- -S: stop running program
+- -v: verbose debug output
