@@ -16,19 +16,21 @@ You need libusb-1.0 to build nxtctl. Build nxtctl with:
 
     $ make
 
+nxtctl should build and work on at least OpenBSD/amd64,
+OpenBSD/sparc64, Debian 7.0 (amd64).
+
 Usage
 -----
 
 nxtctl [-BbdfghilpsSv] [filename/pattern]
-
-- -B: boot (dangerous, disabled by default)
-- -b: print battery level
-- -d [filename]: delete file
-- -f: print firmware version
-- -g [filename]: get file
-- -p [filename]: put file
-- -i: print device info
-- -l [pattern]: list files
-- -s [filename]: start program
-- -S: stop running program
-- -v: verbose debug output
+ -B             boot (disabled by default)
+ -b             print battery level
+ -d [filename]  delete file
+ -f             print firmware version
+ -g [filename]  get file
+ -p [filename]  put file
+ -i             print device info
+ -l [pattern]   list files
+ -s [filename]  start program
+ -S             stop running program
+ -v             verbose debug output

@@ -78,7 +78,18 @@ int main(int argc, char *argv[]){
 		case 'h':
 		default:
 			(void)fprintf(stderr,
-						  "usage: nxtctl [-BbdfghilpsSv] [filename/pattern]\n");
+                          "usage: nxtctl [-BbdfghilpsSv] [filename/pattern]\n"
+                          "        -B             boot (disabled by default)\n"
+                          "        -b             print battery level\n"
+                          "        -d [filename]  delete file\n"
+                          "        -f             print firmware version\n"
+                          "        -g [filename]  get file\n"
+                          "        -p [filename]  put file\n"
+                          "        -i             print device info\n"
+                          "        -l [pattern]   list files\n"
+                          "        -s [filename]  start program\n"
+                          "        -S             stop running program\n"
+                          "        -v             verbose debug output\n");
 			exit(1);
 			/* NOTREACHED */
 		}
