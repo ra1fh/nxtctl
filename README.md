@@ -3,8 +3,8 @@ nxtctl
 
 ### About
 
-nxtctl is a simple libusb based program to control Mindstorms NXT via
-USB. The following operations are implemented:
+nxtctl is a simple libusb based program to control Lego Mindstorms NXT
+via USB. The following operations are implemented:
 
 - list files
 - upload/download/delete files
