@@ -1,0 +1,23 @@
+name: "Build"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-20.04 ]
+        compiler: [ gcc, clang ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      env:
+        CC: ${{ matrix.compiler }}
+      run: make
