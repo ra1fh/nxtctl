@@ -1,3 +1,5 @@
+[![Build](https://github.com/ra1fh/nxtctl/actions/workflows/build.yml/badge.svg)](https://github.com/ra1fh/nxtctl/actions/workflows/build.yml)
+
 nxtctl
 ======
 
