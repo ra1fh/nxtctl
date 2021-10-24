@@ -17,7 +17,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: make
+    - name: install libusb
+      run: sudo apt-get -y install libusb-1.0-0-dev
+    - name: build
       env:
         CC: ${{ matrix.compiler }}
       run: make
