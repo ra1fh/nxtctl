@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: install libusb
       run: sudo apt-get -y install libusb-1.0-0-dev
     - name: build
