@@ -607,12 +607,9 @@ int nxt_print_device_info(NXT* self){
 int nxt_print_files(NXT *self, const char *pattern) {
 	char filename[20];
 	int error = 0;
-	int counter = 0;
 	unsigned int filesize;
 	unsigned char handle;
 	unsigned char handle_valid = 0;
-
-	counter = 0;
 
 	if (pattern && strlen(pattern) >= 20) {
 		fprintf(stderr, "error: pattern too long\n");
@@ -638,7 +635,6 @@ int nxt_print_files(NXT *self, const char *pattern) {
 		/* this makes nxt_cmd_find do "find next" instead of "find first" */
 		pattern = 0;
 		handle_valid = 1;
-		counter++;
 		printf("%6u %s\n", filesize, filename);
 	}
 
