@@ -1,19 +1,17 @@
 
 .PHONY: clean
 
-LDLIBS = 
-CFLAGS = -Wall -Werror
+LDLIBS=
+CFLAGS= -Wall -Werror
 
-PROG=		nxtctl
-PREFIX?=	/usr/local
+PROG= nxtctl
+PREFIX?= /usr/local
 
-SRCS=		main.c nxt.c buf.c 
-OBJS=		main.o nxt.o buf.o
-HDRS=       nxt.h buf.h
+SRCS= main.c nxt.c buf.c
+OBJS= main.o nxt.o buf.o
+HDRS= nxt.h buf.h
 
-CC?=		gcc
-
-INSTALLDIR=	install -d
+INSTALLDIR= install -d
 INSTALLBIN= install -m 0555
 
 .SUFFIXES: .c .o
